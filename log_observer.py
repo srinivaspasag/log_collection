@@ -89,15 +89,22 @@ def seek_to_line(file, line_number):
     file.seek(byte_offset, 0)
 
 
-def fetch_logs_paging(log_file, num_events, page=None):
+def fetch_logs_paging(log_file, num_events=None, page=None):
     # get the total number of lines in the log file
     total_lines = sum(1 for line in open(log_file))
 
     # calculate the number of pages needed to retrieve the desired number of events
     num_pages = (num_events + page_size - 1) // page_size
 
-    # calculate the starting line number for the last page
-    start_line = total_lines - (page_size * num_pages)
+    remainder = num_events % page_size
+
+    if page > 1 and page < num_pages:
+        start_line = total_lines - page * page_size
+    elif remainder:
+        start_line = total_lines - (page_size * num_pages) + (page_size - remainder)
+    else:
+        # calculate the starting line number for the last page
+        start_line = total_lines - (page_size * num_pages)
 
     # Read each line of the file and keep track of the byte offset
     byte_offset = 0
@@ -115,5 +122,5 @@ def fetch_logs_paging(log_file, num_events, page=None):
 
     # print the last n events
     # return reversed(events)
-    logger.info(events)
+    # logger.info(events)
     return events
