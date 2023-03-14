@@ -30,10 +30,7 @@ def get_logs():
     files_list = []
     for root, dirs, files in os.walk(log_directory):
         for file in files:
-            if file.endswith(".gz") or file.endswith(".bz2") or file.endswith(".zip"):
-                continue  # skip compressed files
-            # if file.endswith(".log"):
-            files_list.extend(files)
+            files_list.append(file)
 
     logger.debug("the files list is", files_list)
     return jsonify(files_list)
@@ -74,7 +71,6 @@ def get_log():
         return jsonify({"message": "Error reading "})
 
     keyword = request.args.get("keyword")
-    page = request.args.get("page")
 
     # Get the requested page number from the query parameters
     page = int(request.args.get("page", 1))
