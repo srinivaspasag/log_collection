@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Collection</title>
+</head>
+<body>
+    <h1>Log Collection</h1>
+    <ul>
+        {% for log_link in log_links %}
+            <li>{{ log_link|safe }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
