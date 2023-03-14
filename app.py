@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from logger import setup_logger
 import log_observer as lp
-from consts import log_directory
+from consts import log_directory, number_events
 import os
 
 app = Flask(__name__)
@@ -66,7 +66,7 @@ def get_log():
         if n_str is not None and n_str.isdigit():
             n_events = int(n_str)
         else:
-            n_events = 10  # Set a default value if n is not a valid integer
+            n_events = number_events  # Set a default value if n is not a valid integer
     except:
         return jsonify({"message": "Error reading "})
 
@@ -78,13 +78,13 @@ def get_log():
     file_path = os.path.join(log_directory, filename)
 
     # log_data = lp.fetch_from_single_server_pagination (file_path)
-    log_data = lp.fetch_logs_paging(file_path, n_events, page)
+    log_data, n_events = lp.fetch_logs_paging(file_path, n_events, page)
 
-    logger.info(log_data)
+    logger.debug(log_data)
 
     # Call the function to get the last n events from the file
     last_n_lines = lp.get_last_n_events(log_data, n_events, keyword)
-    # last_n_lines = []
+
     # Return the last n events as a JSON response
     return last_n_lines
 
