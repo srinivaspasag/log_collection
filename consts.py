@@ -16,4 +16,8 @@ else:
 if os.getenv("N_EVENTS"):
     page_size = os.getenv("PAGE_SIZE")
 else:
-    page_size = 1000
+    page_size = 500
+
+zero = 0
+zero_offser = 0
+page_default_val = -1

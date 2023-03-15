@@ -37,10 +37,10 @@ class TestGetLastNEvents(unittest.TestCase):
         self.filepath = file_path
 
         # Test that the function returns the last n lines of the file
-        lines, n = fetch_logs_paging(file_path, n, 0)
-        result = get_last_n_events(lines, n, self.keyword)
+        lines = fetch_logs_paging(file_path, n, -1, None)
+        # result = get_last_n_events(lines, n, self.keyword)
         self.filepath = file_path
-        self.assertEqual(result, events)
+        self.assertEqual(lines, events)
 
     def test_get_last_n_events_invalid_file(self):
         n = 11
@@ -76,11 +76,10 @@ class TestGetLastNEvents(unittest.TestCase):
         events = response.json()
 
         # Test that the function returns the last n lines of the file
-        log_data, n = fetch_logs_paging(file_path, n, 0)
-        last_n_lines = get_last_n_events(log_data, n, keyword)
+        log_data = fetch_logs_paging(file_path, n, -1, keyword)
 
         # result = get_last_n_events(lines, self.count, self.keyword)
-        self.assertEqual(events, last_n_lines)
+        self.assertEqual(log_data, events)
 
     def tearDown(self):
         # Clean up the test file
