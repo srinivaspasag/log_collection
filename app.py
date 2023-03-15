@@ -73,20 +73,12 @@ def get_log():
     keyword = request.args.get("keyword")
 
     # Get the requested page number from the query parameters
-    page = int(request.args.get("page", 1))
+    page = int(request.args.get("page", -1))
+
     # logger.info(f"Received params: param1={filename}, param2={n_events}")
     file_path = os.path.join(log_directory, filename)
 
-    # log_data = lp.fetch_from_single_server_pagination (file_path)
-    log_data, n_events = lp.fetch_logs_paging(file_path, n_events, page)
-
-    logger.debug(log_data)
-
-    # Call the function to get the last n events from the file
-    last_n_lines = lp.get_last_n_events(log_data, n_events, keyword)
-
-    # Return the last n events as a JSON response
-    return last_n_lines
+    return lp.fetch_logs_paging(file_path, n_events, page, keyword)
 
 
 # Define UI endpoint
